@@ -18,9 +18,9 @@ function Carousel() {
 
   return (
     <>
-     <div className="carousel">
+     <div className="carousel overflow-hidden h-96 w-96">
     {/* {dataImg.map((img ,index) => ( */}
-    <img src={dataImg[imgSlider].src} alt={dataImg.alt} key={dataImg[imgSlider].src} className=" w-[100%]"/>
+    <img src={dataImg[imgSlider].src} alt={dataImg.alt} key={dataImg[imgSlider].src} className=" w-[100%] h-[100%] object-cover"/>
   {/* ))} */}
     </div>
     <button onClick={NextImage}>next</button>
