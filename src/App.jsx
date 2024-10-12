@@ -1,10 +1,10 @@
-import Caruosel from "./components/Caruosel.jsx"
+import Carousel from "./components/Carousel..jsx"
 import './App.css'
 
 function App() {
   return (
     <>
-      <Caruosel/>
+      <Carousel/>
     </>
   )
 }
