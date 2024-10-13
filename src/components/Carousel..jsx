@@ -9,13 +9,9 @@ function Carousel() {
     setImgSlder((prev) => (prev === dataImg.length - 1 ? 0 : prev + 1))
   }
 
-
   function PreviousImage() {
     setImgSlder((prev) => (prev === 0 ? dataImg.length - 1 : prev - 1))
-
-
   }
-
 
   return (
     <>
@@ -26,6 +22,13 @@ function Carousel() {
       </div>
      
     <CarouselArrows onNextSlider={NextImage} onPreviousSlider={PreviousImage}/>
+    
+    <div className="flex justify-center ">
+    <span><svg class="h-8  text-red-500"  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="4" /></svg></span>
+    <span><svg class="h-8  text-red-500"  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="4" /></svg></span>
+    <span><svg class="h-8 text-red-500"  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="12" cy="12" r="4" /></svg></span>
+    </div>
+    
     </>
   )
 }
