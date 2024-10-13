@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import  { useState, useEffect, useCallback } from "react";
 import { dataImg } from "../data/data";
 import CarouselArrows from "./caruoselArrow";
 import { Indicator } from "./Indicator";
@@ -11,14 +11,15 @@ interface dataImg {
 function Carousel() {
   const [imgSlider, setImgSlider] = useState<number>(0);
   const [hoverImg, setHoverImg] = useState<boolean>(false);
+  const [touchPosition, setTouchPosition] = useState<number | null>(null);
 
-  function NextImage() {
+  const NextImage = useCallback(() =>  {
     setImgSlider((prev) => (prev === dataImg.length - 1 ? 0 : prev + 1));
-  }
+  }, [])
 
-  function PreviousImage() {
+  const PreviousImage =   useCallback(() => {
     setImgSlider((prev) => (prev === 0 ? dataImg.length - 1 : prev - 1));
-  }
+  }, [])
 
   useEffect(() => {
     let intervalId: number ;
@@ -28,7 +29,31 @@ function Carousel() {
     return () => {
       clearInterval(intervalId);
     };
-  }, [hoverImg]);
+  }, [hoverImg,NextImage,PreviousImage ]);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    const touchDown = e.touches[0].clientX;
+    setTouchPosition(touchDown);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchPosition === null) {
+      return;
+    }
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchPosition - currentTouch;
+
+    if (diff > 5) {
+      NextImage();
+    }
+
+    if (diff < -5) {
+      PreviousImage();
+    }
+
+    setTouchPosition(null);
+  };
 
   return (
     <>
@@ -36,6 +61,8 @@ function Carousel() {
         className="carousel overflow-hidden h-96 w-96 relative p-4"
         onMouseEnter={() => setHoverImg(true)}
         onMouseLeave={() => setHoverImg(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
       >
         <img
           src={dataImg[imgSlider].src}
