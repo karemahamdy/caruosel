@@ -1,15 +1,24 @@
+
+import React from 'react';
 import { dataImg } from "../data/data";
 
-export function Indicator({ imgSlider, onClick }) {
+interface IndicatorProps {
+  imgSlider: number;
+  onClick: (index: number) => void;
+}
+
+export const Indicator: React.FC<IndicatorProps> = ({ imgSlider, onClick }) => {
   return (
     <div className="flex justify-center">
       {dataImg.map((_, index) => {
-        const isActive = imgSlider === index; 
+        const isActive = imgSlider === index;
         return (
           <button key={index} onClick={() => onClick(index)}>
             <span>
               <svg
-                className={`h-8 text-black-500 ${isActive ? "fill-black-500" : "fill-none"}`}
+                className={`h-8 text-black-500 ${
+                  isActive ? "fill-black-500" : "fill-none"
+                }`}
                 height="24"
                 viewBox="0 0 24 24"
                 strokeWidth="2"
@@ -25,4 +34,6 @@ export function Indicator({ imgSlider, onClick }) {
       })}
     </div>
   );
-}
+};
+
+export default Indicator;
