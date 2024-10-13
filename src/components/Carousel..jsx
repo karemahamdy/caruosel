@@ -17,15 +17,13 @@ function Carousel() {
 
   return (
     <>
-      <div className="carousel overflow-hidden h-96 w-96 relative">
-        {/* {dataImg.map((img ,index) => ( */}
-        <img src={dataImg[imgSlider].src} alt={dataImg.alt} key={dataImg[imgSlider].src} className=" w-[100%] h-[100%] object-cover" />
-        {/* ))} */}
+      <div className="carousel overflow-hidden h-96 w-96 relative p-" aria-hidden>  
+        <img src={dataImg[imgSlider].src} alt={dataImg.alt} key={dataImg[imgSlider].src} className="animate-fadeIn w-[100%] h-[100%] object-cover" />
       </div>
      
-    <CarouselArrows onNextSlider={NextImage} onPreviousSlider={PreviousImage}/>
+    <CarouselArrows onNextSlider={NextImage} onPreviousSlider={PreviousImage}  aria-hidden/>
     
-  <Indicator  imgSlider={imgSlider}  onClick={(index) => setImgSlider(index)}/>
+  <Indicator  imgSlider={imgSlider}  onClick={(index) => setImgSlider(index)}  aria-hidden/>
 
     
     </>

@@ -9,7 +9,7 @@ export function Indicator({ imgSlider, onClick }) {
           <button key={index} onClick={() => onClick(index)}>
             <span>
               <svg
-                className={`h-8 text-red-500 ${isActive ? "fill-red-500" : "fill-none"}`}
+                className={`h-8 text-black-500 ${isActive ? "fill-black-500" : "fill-none"}`}
                 height="24"
                 viewBox="0 0 24 24"
                 strokeWidth="2"
