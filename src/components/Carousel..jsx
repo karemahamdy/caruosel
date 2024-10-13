@@ -5,6 +5,7 @@ import {Indicator} from "./Indicator"
 
 function Carousel() {
   const [imgSlider, setImgSlider] = useState(0)
+  
 
   function NextImage() {
     setImgSlider((prev) => (prev === dataImg.length - 1 ? 0 : prev + 1))
@@ -24,7 +25,7 @@ function Carousel() {
      
     <CarouselArrows onNextSlider={NextImage} onPreviousSlider={PreviousImage}/>
     
-  <Indicator onClick={(index) => setImgSlider(index)}/>
+  <Indicator  imgSlider={imgSlider}  onClick={(index) => setImgSlider(index)}/>
 
     
     </>

@@ -1,30 +1,28 @@
-import { dataImg } from "../data/data"
+import { dataImg } from "../data/data";
 
-export function Indicator({onClick}) {
+export function Indicator({ imgSlider, onClick }) {
   return (
-    <>
-      <div className="flex justify-center">
-        {dataImg.map((_, index) => (
+    <div className="flex justify-center">
+      {dataImg.map((_, index) => {
+        const isActive = imgSlider === index; 
+        return (
           <button key={index} onClick={() => onClick(index)}>
             <span>
               <svg
-                className="h-8 text-red-500"
+                className={`h-8 text-red-500 ${isActive ? "fill-red-500" : "fill-none"}`}
                 height="24"
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke="currentColor"
-                fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                <path stroke="none" d="M0 0h24v24H0z" />
                 <circle cx="12" cy="12" r="4" />
               </svg>
             </span>
           </button>
-        ))}
-      </div>
-    </>
-  )
+        );
+      })}
+    </div>
+  );
 }
-
