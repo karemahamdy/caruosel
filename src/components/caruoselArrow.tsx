@@ -11,6 +11,7 @@ const CarouselArrows: React.FC<CarouselArrowsProps> = ({ onPreviousSlider, onNex
     <div className="">
       <button
         className="absolute flex justify-between gap-4 top-[50%] left-[30%]"
+         aria-label="Previous slide"
         onClick={onPreviousSlider}
       >
         <svg
@@ -32,6 +33,7 @@ const CarouselArrows: React.FC<CarouselArrowsProps> = ({ onPreviousSlider, onNex
       </button>
       <button
         className="absolute flex justify-between gap-4 top-[50%] right-[30%]"
+         aria-label="Next slide"
         onClick={onNextSlider}
       >
         <svg

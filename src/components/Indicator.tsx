@@ -1,19 +1,22 @@
 
 import React from 'react';
-import { dataImg } from "../data/data";
+
 
 interface IndicatorProps {
   CurrentIndex: number;
   onClick: (index: number) => void;
+  slides: React.ReactNode[]
 }
 
-export const Indicator: React.FC<IndicatorProps> = ({ CurrentIndex, onClick }) => {
+export const Indicator: React.FC<IndicatorProps> = ({ CurrentIndex, onClick, slides }) => {
   return (
     <div className="flex justify-center">
-      {dataImg.map((_, index) => {
+      {slides.map((_, index) => {
         const isActive = CurrentIndex === index;
         return (
-          <button key={index} onClick={() => onClick(index)}>
+          <button
+          aria-label={`slide ${index + 1}`}
+           key={index} onClick={() => onClick(index)}>
             <span>
               <svg
                 className={`h-8 text-black-500 ${
