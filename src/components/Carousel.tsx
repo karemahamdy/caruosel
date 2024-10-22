@@ -1,31 +1,50 @@
-import React, { useState, useEffect, useCallback, useRef, children } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 // import { dataImg } from "../data/data";
 import CarouselArrows from "./caruoselArrow";
 import { Indicator } from "./Indicator";
 
-// interface CarouselProps {
-//   children: React.ReactNode;
-//   infiniteLoop?: boolean;
-// }
+interface CarouselProps {
+  children: React.ReactNode;
+  autoplayInterval?: number;
+  infiniteLoop?: boolean;
+  visibleSlides?: number;
+  pauseOnHover?: boolean;
+  showNavigation?: boolean;
+  showIndicators?: boolean;
+}
 
-function Carousel({children}) {
+function Carousel({
+  children,
+  autoplayInterval = 3000,
+  infiniteLoop = true,
+  pauseOnHover = true,
+  showNavigation = true,
+  showIndicators = true,
+}: CarouselProps) {
+
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [hoverImg, setHoverImg] = useState<boolean>(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const autoplayTimerRef = useRef<number | null>(null);
-  
+
   const slides = React.Children.toArray(children);
-  const autoplayInterval = 3000;
   const totalSlides = slides.length
 
-
   const NextImage = useCallback(() => {
+    if (!infiniteLoop && currentIndex === totalSlides - 1) {
+      return;
+    }
     setCurrentIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
-  }, [totalSlides])
+  }, [totalSlides, infiniteLoop, currentIndex]);
 
   const PreviousImage = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
-  }, [totalSlides])
+    if (!infiniteLoop && currentIndex === 0) {
+      return;
+    }
+    {
+      setCurrentIndex((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+    }
+  }, [totalSlides, infiniteLoop, currentIndex]);
 
 
   // auto play
@@ -42,15 +61,17 @@ function Carousel({children}) {
     }
   }, []);
 
+
   // stop autoPlay on hover
   useEffect(() => {
-    if (!hoverImg) {
+    if (!hoverImg || !pauseOnHover) {
       startAutoplay();
     } else {
       endAutoplay();
     }
     return () => endAutoplay();
-  }, [hoverImg, startAutoplay, endAutoplay]);
+  }, [hoverImg, pauseOnHover, startAutoplay, endAutoplay]);
+
 
   // key
   function handleKeyPressed(e: React.KeyboardEvent) {
@@ -65,7 +86,7 @@ function Carousel({children}) {
   return (
     <>
       <div
-        className="carousel overflow- h-96 w-full relative p-4"
+        className="carousel overflow-hidden flex items-center justify-center  w-full relative p-16"
         ref={carouselRef}
         onMouseEnter={() => setHoverImg(true)}
         onMouseLeave={() => setHoverImg(false)}
@@ -76,33 +97,35 @@ function Carousel({children}) {
       >
 
         {slides.map((children, index) => {
-           return (
-          <div
-            key={index}
-            className={`absolute w-full h-full transition-opacity duration-500 ease-in-out ${
-              index === currentIndex ? 'opacity-100' : 'opacity-0'
-            }`}  aria-roledescription="slide">
-              
-            {children}
+          return (
+            <div
+              key={index}
+              className={`absolute w-full h-full transition-opacity duration-500 ease-in-out ${index === currentIndex ? 'opacity-100' : 'opacity-0'
+                }`} aria-roledescription="slide">
 
-          </div>
-    ) })}
-        
+              {children}
+
+            </div>
+          )
+        })}
+
       </div >
+      {showNavigation && (
+        <CarouselArrows
+          onNextSlider={NextImage}
+          onPreviousSlider={PreviousImage}
+        />
+      )}
 
-      <CarouselArrows
-        onNextSlider={NextImage}
-        onPreviousSlider={PreviousImage}
-      />
-
-      <Indicator
-       slides={slides}
-        CurrentIndex={currentIndex}
-        onClick={(index: number) => setCurrentIndex(index)}
-        aria-hidden="false"
-      />
+      {showIndicators && (
+        <Indicator
+          slides={slides}
+          CurrentIndex={currentIndex}
+          onClick={(index: number) => setCurrentIndex(index)}
+          aria-hidden="false"
+        />
+      )}
     </>
   );
 }
-
 export default Carousel;
