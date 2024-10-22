@@ -11,35 +11,65 @@ import { Indicator } from "./Indicator";
 function Carousel() {
   const [imgSlider, setImgSlider] = useState<number>(0);
   const [hoverImg, setHoverImg] = useState<boolean>(false);
+
   const carouselRef = useRef<HTMLDivElement>(null);
+  const autoplayTimerRef =  useRef<number | null>(null); 
+
+  const autoplayInterval = 3000;
+  const  totalSlides = dataImg.length
 
   const NextImage = useCallback(() =>  {
-    setImgSlider((prev) => (prev === dataImg.length - 1 ? 0 : prev + 1));
-  }, [])
+    setImgSlider((prev) => (prev === totalSlides- 1 ? 0 : prev + 1));
+  }, [totalSlides])
 
   const PreviousImage =   useCallback(() => {
-    setImgSlider((prev) => (prev === 0 ? dataImg.length - 1 : prev - 1));
-  }, [])
+    setImgSlider((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
+  }, [totalSlides])
 
-  // useEffect(() => {
-  //   let intervalId: number ;
-  //   if (!hoverImg) {
-  //     intervalId = setInterval(NextImage, 1000);
-  //   }
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, [hoverImg,NextImage,PreviousImage ]);
+  const startAutoplay = useCallback(() => {
+    if (autoplayInterval > 0 && totalSlides > 1 && autoplayTimerRef.current === null) {
+      autoplayTimerRef.current = setInterval(NextImage, autoplayInterval);
+    }
+  }, [autoplayInterval, NextImage, totalSlides]);
 
-   function handleKeyPressed (e: React.KeyboardEvent) {
-       if (e.key === 'ArrowLeft') {
-        PreviousImage()
-      }
-    else if (e.key === 'ArrowRight') {
-      NextImage()
-      }
-      
-  }
+
+  const endAutoplay = useCallback(() => {
+    if (autoplayTimerRef.current) {
+      clearInterval(autoplayTimerRef.current);
+      autoplayTimerRef.current = null; 
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hoverImg) {
+      startAutoplay();
+    } else {
+      endAutoplay();
+    }
+    return () => endAutoplay();
+  }, [hoverImg, startAutoplay, endAutoplay]);
+
+
+  function handleKeyPressed (e: React.KeyboardEvent) {
+    if (e.key === 'ArrowLeft') {
+     PreviousImage()
+   }
+ else if (e.key === 'ArrowRight') {
+   NextImage()
+   }
+   
+}
+
+
+  useEffect(() => {
+
+    if (!hoverImg ) {
+      startAutoplay()
+    }
+    return () => { 
+      endAutoplay()
+    };
+  }, [hoverImg, NextImage, PreviousImage, endAutoplay,  startAutoplay]);
 
 
   return (
