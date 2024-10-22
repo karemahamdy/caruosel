@@ -3,15 +3,15 @@ import React from 'react';
 import { dataImg } from "../data/data";
 
 interface IndicatorProps {
-  imgSlider: number;
+  CurrentIndex: number;
   onClick: (index: number) => void;
 }
 
-export const Indicator: React.FC<IndicatorProps> = ({ imgSlider, onClick }) => {
+export const Indicator: React.FC<IndicatorProps> = ({ CurrentIndex, onClick }) => {
   return (
     <div className="flex justify-center">
       {dataImg.map((_, index) => {
-        const isActive = imgSlider === index;
+        const isActive = CurrentIndex === index;
         return (
           <button key={index} onClick={() => onClick(index)}>
             <span>
