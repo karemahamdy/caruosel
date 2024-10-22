@@ -1,5 +1,5 @@
 import './App.css'
-import Carousel from "./components/Carousel.tsx"
+import Carousel from "./components/Carousel.js"
 
 function App() {
   return (

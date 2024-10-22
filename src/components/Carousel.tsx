@@ -1,14 +1,17 @@
-import  { useState, useEffect, useCallback } from "react";
+import  { useState, useEffect, useCallback, useRef } from "react";
 import { dataImg } from "../data/data";
 import CarouselArrows from "./caruoselArrow";
 import { Indicator } from "./Indicator";
 
-
+// interface CarouselProps {
+//   children: React.ReactNode;
+//   infiniteLoop?: boolean;
+// }
 
 function Carousel() {
   const [imgSlider, setImgSlider] = useState<number>(0);
   const [hoverImg, setHoverImg] = useState<boolean>(false);
-  const [touchPosition, setTouchPosition] = useState<number | null>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const NextImage = useCallback(() =>  {
     setImgSlider((prev) => (prev === dataImg.length - 1 ? 0 : prev + 1));
@@ -28,38 +31,26 @@ function Carousel() {
   //   };
   // }, [hoverImg,NextImage,PreviousImage ]);
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const touchDown = e.touches[0].clientX;
-    setTouchPosition(touchDown);
-  };
+   function handleKeyPressed (e: React.KeyboardEvent) {
+       if (e.key === 'ArrowLeft') {
+        PreviousImage()
+      }
+    else if (e.key === 'ArrowRight') {
+      NextImage()
+      }
+      
+  }
 
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchPosition === null) {
-      return;
-    }
-
-    const currentTouch = e.touches[0].clientX;
-    const diff = touchPosition - currentTouch;
-
-    if (diff > 5) {
-      NextImage();
-    }
-
-    if (diff < -5) {
-      PreviousImage();
-    }
-
-    setTouchPosition(null);
-  };
 
   return (
     <>
       <div
         className="carousel overflow- h-96 w-full relative p-4"
+        ref={carouselRef}
         onMouseEnter={() => setHoverImg(true)}
         onMouseLeave={() => setHoverImg(false)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
+        onKeyDown={handleKeyPressed}
+        tabIndex={0} 
       >
         <img
           src={dataImg[imgSlider].src}

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { dataImg } from "../data/data";
 
-function caruoselContent() {
-    const [imgSlider, setImgSlider] = useState<number>(0);
+function CaruoselContent({imgSlider}) {
+  
   return (
     <div>
        <img
@@ -15,4 +15,4 @@ function caruoselContent() {
   )
 }
 
-export default caruoselContent
+export default CaruoselContent
