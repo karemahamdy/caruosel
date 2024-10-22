@@ -3,10 +3,7 @@ import { dataImg } from "../data/data";
 import CarouselArrows from "./caruoselArrow";
 import { Indicator } from "./Indicator";
 
-interface dataImg {
-  src: string;
-  alt: string;
-}
+
 
 function Carousel() {
   const [imgSlider, setImgSlider] = useState<number>(0);
@@ -21,15 +18,15 @@ function Carousel() {
     setImgSlider((prev) => (prev === 0 ? dataImg.length - 1 : prev - 1));
   }, [])
 
-  useEffect(() => {
-    let intervalId: number ;
-    if (!hoverImg) {
-      intervalId = setInterval(NextImage, 1000);
-    }
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [hoverImg,NextImage,PreviousImage ]);
+  // useEffect(() => {
+  //   let intervalId: number ;
+  //   if (!hoverImg) {
+  //     intervalId = setInterval(NextImage, 1000);
+  //   }
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, [hoverImg,NextImage,PreviousImage ]);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const touchDown = e.touches[0].clientX;
@@ -58,7 +55,7 @@ function Carousel() {
   return (
     <>
       <div
-        className="carousel overflow-hidden h-96 w-96 relative p-4"
+        className="carousel overflow- h-96 w-full relative p-4"
         onMouseEnter={() => setHoverImg(true)}
         onMouseLeave={() => setHoverImg(false)}
         onTouchStart={handleTouchStart}
